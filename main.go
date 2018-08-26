@@ -12,7 +12,12 @@ import (
 
 func main() {
 
-	res, err := http.Get("http://www.gutenberg.org/files/2701/old/moby10b.txt")
+	var url string
+
+	fmt.Print("Please enter a URL to count words for: ")
+	fmt.Scan(&url)
+
+	res, err := http.Get(url)
 
 	if err != nil {
 		log.Fatal(err)
@@ -25,7 +30,7 @@ func main() {
 
 	buckets := make([]map[string]int, hashtable.NumBuckets)
 
-	for i := 0; i < 12; i++ {
+	for i := 0; i < hashtable.NumBuckets; i++ {
 		buckets[i] = make(map[string]int)
 	}
 
@@ -46,7 +51,12 @@ func main() {
 		fmt.Fprintln(os.Stderr, "reading input:", err)
 	}
 
-	count, _ := hashtable.Search(buckets, "Moby")
+	var search string
 
-	fmt.Println(count)
+	fmt.Print("Please enter the word you would like to search for: ")
+	fmt.Scan(&search)
+
+	count, _ := hashtable.Count(buckets, search)
+
+	fmt.Println("The word", search, "is mentioned ", count, "times")
 }
